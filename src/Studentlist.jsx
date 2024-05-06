@@ -5,29 +5,31 @@ const sList = props.sList;
 const setsList = props.setsList;
 const fList = props.fList;
 const setfList = props.setfList
-const [buttonDisable, setbuttonDisable] = useState(false) 
 
 function handleAdd(selectedId){
 console.log(selectedId)
 const temp = sList.filter((item)=>{
 return item.id == selectedId
 })
-
 console.log(temp)
+
+
 const selectedItem = temp.map((item)=>{
 return item.name
 })
-
-
 console.log(selectedItem)
+
+const disabledItem= [...sList]
+disabledItem.forEach((item)=>{
+  if(item.name == selectedItem){
+    item.disabled = true
+  }
+})
+  
 setfList([...fList, selectedItem])
-setbuttonDisable(true)
+setsList(disabledItem)
 }
 
-// function disableCount(event){
-//   event.preventDefault();
-//   setbuttonDisable(true)
-// }
 
 return(
 
@@ -40,7 +42,7 @@ sList.map((item, index)=>{
     <li key={index} className="py-3 flex justify-between">{index+1}. {item.name} 
   <button 
   className="bg-black text-white px-2 py-1 rounded-md"
-      onClick={buttonDisable ? ()=>{} : ()=>handleAdd(item.id)}>Add to Favourite</button>
+      onClick={ ()=>handleAdd(item.id)} disabled={item.disabled} style={{ backgroundColor: item.disabled ? 'grey' : 'black' }}>Add to Favourite</button>
     </li>
     )
 })
